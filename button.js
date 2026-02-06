@@ -21,7 +21,7 @@ const ASSETS = [
     desc: "Custom Roblox chat UI.",
     tags: ["UI"],
     icon: "💬",
-    url: "https://drive.usercontent.google.com/u/0/uc?id=10U0if4VIyn40YLzSLGh3Xe6OJBM7wtT7&export=download"
+    url: "https://drive.google.com/file/d/10U0if4VIyn40YLzSLGh3Xe6OJBM7wtT7/view?usp=drive_link"
   }
 ];
 
