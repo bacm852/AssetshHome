@@ -14,17 +14,13 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      color: white;
       min-height: 100vh;
       overflow-x: hidden;
-      color: white;
       background: #05060a;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 30px 0;
     }
 
-    /* Animated background */
+    /* BACKGROUND ANIMATION */
     .bg {
       position: fixed;
       inset: 0;
@@ -38,100 +34,119 @@
 
     @keyframes floatbg {
       0%   { transform: scale(1) translateY(0px); }
-      50%  { transform: scale(1.05) translateY(-14px); }
+      50%  { transform: scale(1.04) translateY(-12px); }
       100% { transform: scale(1) translateY(0px); }
     }
 
-    #app {
+    .wrap {
       position: relative;
       z-index: 2;
-      width: 92%;
-      max-width: 680px;
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
     }
 
-    .mainCard {
-      padding: 28px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.06);
+    /* CARD */
+    .card {
+      width: 100%;
+      border-radius: 26px;
+      padding: 34px 26px;
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.10);
       backdrop-filter: blur(12px);
-      box-shadow: 0 0 30px rgba(0,0,0,0.65);
+      box-shadow: 0 0 35px rgba(0,0,0,0.55);
       text-align: center;
     }
 
-    .badge {
+    .tag {
       display: inline-block;
-      padding: 7px 14px;
+      padding: 8px 14px;
       border-radius: 999px;
-      font-size: 13px;
-      background: rgba(0,255,204,0.10);
-      border: 1px solid rgba(0,255,204,0.25);
-      color: #00ffcc;
       font-weight: bold;
-      margin-bottom: 12px;
+      font-size: 13px;
+      background: rgba(0,255,204,0.12);
+      border: 1px solid rgba(0,255,204,0.22);
+      color: #00ffcc;
+      margin-bottom: 10px;
     }
 
-    h1 {
+    .title {
+      font-size: 44px;
+      font-weight: 900;
       margin: 0;
-      font-size: 34px;
       letter-spacing: 1px;
     }
 
-    .nameGlow {
+    .title span {
       color: #00ffcc;
-      text-shadow: 0 0 12px rgba(0,255,204,0.8);
+      text-shadow: 0 0 20px rgba(0,255,204,0.4);
     }
 
-    .sub {
-      margin-top: 10px;
-      opacity: 0.85;
+    .desc {
+      opacity: 0.75;
       font-size: 15px;
-      line-height: 1.5;
+      margin-top: 12px;
+      line-height: 1.4;
     }
 
-    .assetsList {
-      margin-top: 20px;
-      display: grid;
-      gap: 14px;
+    /* ASSET LIST */
+    .assets {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 18px;
     }
 
-    .assetCard {
-      padding: 18px;
+    .assetRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
       border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      text-align: left;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
     }
 
     .assetName {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      margin-bottom: 12px;
     }
 
+    /* DOWNLOAD BUTTON */
     .downloadBtn {
-      width: 100%;
-      padding: 14px 18px;
+      padding: 12px 18px;
       border-radius: 16px;
       border: none;
       cursor: pointer;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 15px;
       background: #00ffcc;
       color: black;
       transition: 0.2s;
+      min-width: 160px;
     }
 
     .downloadBtn:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(0,255,204,0.6);
+      transform: scale(1.05);
+      box-shadow: 0 0 22px rgba(0,255,204,0.35);
     }
 
     .footer {
       margin-top: 18px;
-      font-size: 13px;
       opacity: 0.55;
+      font-size: 13px;
       text-align: center;
+    }
+
+    /* MOBILE */
+    @media (max-width: 650px) {
+      .title { font-size: 34px; }
+      .assetRow { flex-direction: column; }
+      .downloadBtn { width: 100%; }
     }
   </style>
 </head>
@@ -139,22 +154,37 @@
 <body>
   <div class="bg"></div>
 
-  <div id="app">
-    <div class="mainCard">
-      <div class="badge">🔥 Assetshome</div>
+  <div class="wrap">
 
-      <h1>Welcome <span class="nameGlow">BACM852</span></h1>
+    <!-- TOP CARD -->
+    <div class="card">
+      <div class="tag">🔥 Assetshome</div>
 
-      <div class="sub">
+      <h1 class="title">Welcome <span>BACM852</span></h1>
+
+      <div class="desc">
         Here is my assets list 😎<br>
         Click download to get the file.
       </div>
 
-      <!-- JS puts assets here -->
-      <div class="assetsList" id="assetsList"></div>
+      <div class="footer">© 2026 - BACM852</div>
+    </div>
+
+    <!-- ASSETS CARD -->
+    <div class="card">
+      <div class="tag">📦 Assets</div>
+
+      <h1 class="title">Download <span>Files</span></h1>
+
+      <div class="desc">
+        One button, real download.
+      </div>
+
+      <div class="assets" id="assetsList"></div>
 
       <div class="footer">© 2026 - BACM852</div>
     </div>
+
   </div>
 
   <script src="button.js"></script>

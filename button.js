@@ -1,39 +1,36 @@
-// ===================================
-// Assetshome - Assets List (2 files)
-// Created by BACM852
-// ===================================
+// ================================
+// ASSETS LIST (EDIT HERE)
+// ================================
 
-const assets = [
+const ASSETS = [
   {
     name: "ShutdownAnnouncement",
-    link: "https://drive.google.com/uc?export=download&id=170zWF2bnr3ojk_v7LfCjKbFi4HaVo3ve"
+    url: "https://drive.google.com/uc?export=download&id=170zWF2bnr3ojk_v7LfCjKbFi4HaVo3ve"
   },
   {
     name: "Drag System",
-    link: "https://drive.google.com/uc?export=download&id=194aWbNcfLj7sJL4QRLqTGktsI_Z_KaE-"
+    url: "https://drive.google.com/uc?export=download&id=194aWbNcfLj7sJL4QRLqTGktsI_Z_KaE-"
   }
 ];
 
-const list = document.getElementById("assetsList");
+// ================================
+// RENDER
+// ================================
 
-// Create cards
-assets.forEach((asset) => {
-  const card = document.createElement("div");
-  card.className = "assetCard";
+const assetsList = document.getElementById("assetsList");
 
-  const name = document.createElement("div");
-  name.className = "assetName";
-  name.innerText = "Name: " + asset.name;
+ASSETS.forEach(asset => {
+  const row = document.createElement("div");
+  row.className = "assetRow";
 
-  const btn = document.createElement("button");
-  btn.className = "downloadBtn";
-  btn.innerText = "⬇ Download";
+  row.innerHTML = `
+    <div class="assetName">${asset.name}</div>
+    <button class="downloadBtn">⬇ Download</button>
+  `;
 
-  btn.addEventListener("click", () => {
-    window.open(asset.link, "_blank");
-  });
+  row.querySelector(".downloadBtn").onclick = () => {
+    window.open(asset.url, "_blank");
+  };
 
-  card.appendChild(name);
-  card.appendChild(btn);
-  list.appendChild(card);
+  assetsList.appendChild(row);
 });
