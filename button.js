@@ -10,6 +10,10 @@ const ASSETS = [
   {
     name: "Drag System",
     url: "https://drive.google.com/uc?export=download&id=194aWbNcfLj7sJL4QRLqTGktsI_Z_KaE-"
+  },
+  {
+    name: "sickeningscustomchat",
+    url: "https://drive.google.com/file/d/10U0if4VIyn40YLzSLGh3Xe6OJBM7wtT7/view?usp=drive_link"
   }
 ];
 
