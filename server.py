@@ -1,37 +1,42 @@
+from flask import Flask, jsonify, send_from_directory
 import os
-import json
-from http.server import SimpleHTTPRequestHandler, HTTPServer
-from urllib.parse import urlparse
 
-PORT = 8520
+app = Flask(__name__)
 
-ASSETS_FOLDER = "Assets"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(BASE_DIR, "Assets")
 
-class Handler(SimpleHTTPRequestHandler):
-    def do_GET(self):
-        parsed = urlparse(self.path)
+@app.route("/")
+def home():
+    return send_from_directory(BASE_DIR, "index.html")
 
-        # API: list all zip assets
-        if parsed.path == "/api/assets":
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Access-Control-Allow-Origin", "*")
-            self.end_headers()
+@app.route("/icon.png")
+def icon():
+    return send_from_directory(BASE_DIR, "icon.png")
 
-            assets = []
-            if os.path.exists(ASSETS_FOLDER):
-                for file in sorted(os.listdir(ASSETS_FOLDER)):
-                    if file.lower().endswith(".zip"):
-                        name = file[:-4]
-                        assets.append({
-                            "name": name,
-                            "file": f"{ASSETS_FOLDER}/{file}"
-                        })
+@app.route("/api/assets")
+def api_assets():
+    assets = []
 
-            self.wfile.write(json.dumps(assets, indent=2).encode("utf-8"))
-            return
+    if not os.path.exists(ASSETS_DIR):
+        os.makedirs(ASSETS_DIR)
 
-        return super().do_GET()
+    for file in os.listdir(ASSETS_DIR):
+        path = os.path.join(ASSETS_DIR, file)
+        if os.path.isfile(path):
+            assets.append({
+                "name": file,
+                "file": f"/Assets/{file}"
+            })
 
-print(f"🔥 Bacm852Home running: http://localhost:{PORT}")
-HTTPServer(("localhost", PORT), Handler).serve_forever()
+    assets.sort(key=lambda x: x["name"].lower())
+    return jsonify(assets)
+
+@app.route("/Assets/<path:filename>")
+def download_asset(filename):
+    return send_from_directory(ASSETS_DIR, filename, as_attachment=True)
+
+if __name__ == "__main__":
+    print("AssetsHome Running!")
+    print("Open: http://127.0.0.1:5000")
+    app.run(host="0.0.0.0", port=5000, debug=True)
