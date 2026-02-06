@@ -38,14 +38,22 @@ function guessCategory(asset) {
 
 function render() {
   const list = document.getElementById("assetsList");
-  const search = document.getElementById("search").value.trim().toLowerCase();
+  const searchBox = document.getElementById("search");
+
+  if (!list || !searchBox) return;
+
+  const search = searchBox.value.trim().toLowerCase();
 
   list.innerHTML = "";
 
   const filtered = ASSETS.filter(a => {
     const cat = guessCategory(a);
     const okFilter = (currentFilter === "all") || (cat === currentFilter);
-    const okSearch = a.name.toLowerCase().includes(search);
+    const okSearch =
+      a.name.toLowerCase().includes(search) ||
+      (a.desc || "").toLowerCase().includes(search) ||
+      (a.tags || []).join(" ").toLowerCase().includes(search);
+
     return okFilter && okSearch;
   });
 
@@ -75,9 +83,10 @@ function render() {
       <button class="downloadBtn">⬇ Download</button>
     `;
 
-    card.querySelector(".downloadBtn").onclick = () => {
-      window.location.href = asset.url; // REAL DOWNLOAD
-    };
+    // FIX: open download in new tab (better for Google Drive)
+    card.querySelector(".downloadBtn").addEventListener("click", () => {
+      window.open(asset.url, "_blank");
+    });
 
     list.appendChild(card);
   });
@@ -95,4 +104,18 @@ document.querySelectorAll(".pill").forEach(btn => {
 });
 
 /* SEARCH */
-document.getElementB
+const searchInput = document.getElementById("search");
+if (searchInput) {
+  searchInput.addEventListener("input", render);
+}
+
+/* CLOSE BUTTON */
+const closeBtn = document.querySelector(".closeBtn");
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
+    document.querySelector(".modal").style.display = "none";
+  });
+}
+
+/* START */
+render();
