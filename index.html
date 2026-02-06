@@ -15,14 +15,16 @@
       margin: 0;
       font-family: Arial, sans-serif;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
       color: white;
       background: #05060a;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
+      padding: 30px 0;
     }
 
+    /* Animated background */
     .bg {
       position: fixed;
       inset: 0;
@@ -40,12 +42,96 @@
       100% { transform: scale(1) translateY(0px); }
     }
 
-    /* JS will create the frame here */
     #app {
       position: relative;
       z-index: 2;
       width: 92%;
-      max-width: 520px;
+      max-width: 680px;
+    }
+
+    .mainCard {
+      padding: 28px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.65);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      background: rgba(0,255,204,0.10);
+      border: 1px solid rgba(0,255,204,0.25);
+      color: #00ffcc;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: 1px;
+    }
+
+    .nameGlow {
+      color: #00ffcc;
+      text-shadow: 0 0 12px rgba(0,255,204,0.8);
+    }
+
+    .sub {
+      margin-top: 10px;
+      opacity: 0.85;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .assetsList {
+      margin-top: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .assetCard {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+    }
+
+    .assetName {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .downloadBtn {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      background: #00ffcc;
+      color: black;
+      transition: 0.2s;
+    }
+
+    .downloadBtn:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(0,255,204,0.6);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 13px;
+      opacity: 0.55;
+      text-align: center;
     }
   </style>
 </head>
@@ -53,10 +139,24 @@
 <body>
   <div class="bg"></div>
 
-  <!-- JS makes UI inside this -->
-  <div id="app"></div>
+  <div id="app">
+    <div class="mainCard">
+      <div class="badge">🔥 Assetshome</div>
 
-  <!-- LOAD button.js -->
+      <h1>Welcome <span class="nameGlow">BACM852</span></h1>
+
+      <div class="sub">
+        Here is my assets list 😎<br>
+        Click download to get the file.
+      </div>
+
+      <!-- JS puts assets here -->
+      <div class="assetsList" id="assetsList"></div>
+
+      <div class="footer">© 2026 - BACM852</div>
+    </div>
+  </div>
+
   <script src="button.js"></script>
 </body>
 </html>
