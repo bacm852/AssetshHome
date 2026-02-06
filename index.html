@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assetshome</title>
+
+  <!-- ICON -->
   <link rel="icon" type="image/png" href="icon.png" />
 
   <style>
@@ -12,13 +14,15 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #05060a;
-      color: white;
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow: hidden;
+      color: white;
+      background: #05060a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Beautiful animated background */
     .bg {
       position: fixed;
       inset: 0;
@@ -32,134 +36,16 @@
 
     @keyframes floatbg {
       0%   { transform: scale(1) translateY(0px); }
-      50%  { transform: scale(1.04) translateY(-12px); }
+      50%  { transform: scale(1.05) translateY(-14px); }
       100% { transform: scale(1) translateY(0px); }
     }
 
-    .wrap {
+    /* JS will create the frame here */
+    #app {
       position: relative;
       z-index: 2;
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-
-    .title {
-      font-size: 34px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .sub {
-      font-size: 13px;
-      opacity: 0.6;
-      margin-bottom: 18px;
-    }
-
-    .searchRow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      margin-bottom: 18px;
-      backdrop-filter: blur(10px);
-    }
-
-    input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      font-size: 15px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    /* FRAME CARD */
-    .card {
-      border-radius: 20px;
-      padding: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 25px rgba(0,0,0,0.55);
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: scale(1.02);
-    }
-
-    .assetTop {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .iconBox {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      background: rgba(0,255,204,0.12);
-      border: 1px solid rgba(0,255,204,0.20);
-      color: #00ffcc;
-    }
-
-    .assetName {
-      font-size: 18px;
-      font-weight: bold;
-      word-break: break-word;
-    }
-
-    .assetInfo {
-      font-size: 13px;
-      opacity: 0.65;
-      margin-top: 4px;
-    }
-
-    .download {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: bold;
-      background: #00ffcc;
-      color: black;
-      border: none;
-      transition: 0.2s;
-    }
-
-    .download:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 18px rgba(0,255,204,0.35);
-    }
-
-    .footer {
-      margin-top: 26px;
-      opacity: 0.55;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .error {
-      margin-top: 15px;
-      opacity: 0.7;
-      font-size: 14px;
-      color: #ff6b6b;
+      width: 92%;
+      max-width: 520px;
     }
   </style>
 </head>
@@ -167,85 +53,10 @@
 <body>
   <div class="bg"></div>
 
-  <div class="wrap">
-    <div class="title">Assetshome</div>
-    <div class="sub">Auto updated from Assets/ folder</div>
+  <!-- JS makes UI inside this -->
+  <div id="app"></div>
 
-    <div class="searchRow">
-      🔍 <input id="search" placeholder="Search assets..." />
-    </div>
-
-    <div class="grid" id="grid"></div>
-
-    <div class="error" id="err"></div>
-
-    <div class="footer">© 2026 - BACM852</div>
-  </div>
-
-  <script>
-    let assets = [];
-
-    function guessIcon(name) {
-      const n = name.toLowerCase();
-      if (n.includes("ui") || n.includes("menu")) return "🖥️";
-      if (n.includes("security") || n.includes("ban")) return "🛡️";
-      if (n.includes("camera") || n.includes("avatar")) return "👤";
-      if (n.includes("fps")) return "📈";
-      if (n.includes("zip")) return "📦";
-      return "⚙️";
-    }
-
-    function render() {
-      const grid = document.getElementById("grid");
-      const q = document.getElementById("search").value.trim().toLowerCase();
-      grid.innerHTML = "";
-
-      const filtered = assets.filter(a => a.name.toLowerCase().includes(q));
-
-      for (const a of filtered) {
-        const div = document.createElement("div");
-        div.className = "card";
-
-        div.innerHTML = `
-          <div class="assetTop">
-            <div class="iconBox">${guessIcon(a.name)}</div>
-            <div>
-              <div class="assetName">${a.name}</div>
-              <div class="assetInfo">File in Assets folder</div>
-            </div>
-          </div>
-
-          <button class="download" onclick="downloadFile('${a.file}')">
-            ⬇ Download
-          </button>
-        `;
-
-        grid.appendChild(div);
-      }
-    }
-
-    function downloadFile(path) {
-      window.location.href = path;
-    }
-
-    async function loadAssets() {
-      const err = document.getElementById("err");
-      err.textContent = "";
-
-      try {
-        const res = await fetch("/api/assets");
-        if (!res.ok) throw new Error("API Error");
-
-        assets = await res.json();
-        render();
-      } catch (e) {
-        err.textContent = "❌ FAILED: You must open with http://localhost:5500 (not file://)";
-      }
-    }
-
-    document.getElementById("search").addEventListener("input", render);
-
-    loadAssets();
-  </script>
+  <!-- LOAD button.js -->
+  <script src="button.js"></script>
 </body>
 </html>
