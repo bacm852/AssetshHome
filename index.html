@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Assetshome</title>
-
-  <!-- ✅ your file name is icon.png -->
   <link rel="icon" type="image/png" href="icon.png" />
 
   <style>
@@ -20,7 +18,7 @@
       overflow-x: hidden;
     }
 
-    /* ✅ Animated Background */
+    /* Beautiful animated background */
     .bg {
       position: fixed;
       inset: 0;
@@ -47,14 +45,15 @@
     }
 
     .title {
-      font-size: 30px;
+      font-size: 34px;
       font-weight: bold;
+      margin-bottom: 4px;
     }
 
     .sub {
       font-size: 13px;
       opacity: 0.6;
-      margin-top: 4px;
+      margin-bottom: 18px;
     }
 
     .searchRow {
@@ -65,7 +64,7 @@
       border-radius: 18px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.10);
-      margin: 18px 0 16px;
+      margin-bottom: 18px;
       backdrop-filter: blur(10px);
     }
 
@@ -80,10 +79,11 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
 
+    /* FRAME CARD */
     .card {
       border-radius: 20px;
       padding: 18px;
@@ -91,6 +91,11 @@
       border: 1px solid rgba(255,255,255,0.10);
       backdrop-filter: blur(10px);
       box-shadow: 0 0 25px rgba(0,0,0,0.55);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
     }
 
     .assetTop {
@@ -101,9 +106,9 @@
     }
 
     .iconBox {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -119,37 +124,42 @@
       word-break: break-word;
     }
 
-    .assetDesc {
+    .assetInfo {
       font-size: 13px;
-      opacity: 0.7;
+      opacity: 0.65;
       margin-top: 4px;
     }
 
-    /* ✅ REAL DOWNLOAD BUTTON */
     .download {
       width: 100%;
       margin-top: 14px;
       padding: 12px 14px;
       border-radius: 14px;
-      border: none;
       cursor: pointer;
       font-weight: bold;
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: #00ffcc;
+      color: black;
+      border: none;
       transition: 0.2s;
     }
 
     .download:hover {
       transform: scale(1.03);
-      box-shadow: 0 0 18px rgba(255,255,255,0.15);
+      box-shadow: 0 0 18px rgba(0,255,204,0.35);
     }
 
     .footer {
-      margin-top: 24px;
+      margin-top: 26px;
       opacity: 0.55;
       font-size: 13px;
       text-align: center;
+    }
+
+    .error {
+      margin-top: 15px;
+      opacity: 0.7;
+      font-size: 14px;
+      color: #ff6b6b;
     }
   </style>
 </head>
@@ -158,10 +168,8 @@
   <div class="bg"></div>
 
   <div class="wrap">
-    <div>
-      <div class="title">Assetshome</div>
-      <div class="sub">Auto updated from Assets/ folder</div>
-    </div>
+    <div class="title">Assetshome</div>
+    <div class="sub">Auto updated from Assets/ folder</div>
 
     <div class="searchRow">
       🔍 <input id="search" placeholder="Search assets..." />
@@ -169,54 +177,45 @@
 
     <div class="grid" id="grid"></div>
 
+    <div class="error" id="err"></div>
+
     <div class="footer">© 2026 - BACM852</div>
   </div>
 
   <script>
     let assets = [];
 
-    function guessCategory(name) {
+    function guessIcon(name) {
       const n = name.toLowerCase();
-      if (n.includes("fps") || n.includes("hud") || n.includes("menu") || n.includes("ui")) return "UI";
-      if (n.includes("whitelist") || n.includes("ban") || n.includes("security")) return "Security";
-      if (n.includes("avatar") || n.includes("camera") || n.includes("head")) return "Avatar";
-      if (n.includes("donation") || n.includes("economy") || n.includes("cash")) return "Economy";
-      return "System";
-    }
-
-    function guessIcon(cat) {
-      cat = (cat || "").toLowerCase();
-      if (cat === "ui") return "🖥️";
-      if (cat === "security") return "🛡️";
-      if (cat === "avatar") return "👤";
-      if (cat === "economy") return "💰";
+      if (n.includes("ui") || n.includes("menu")) return "🖥️";
+      if (n.includes("security") || n.includes("ban")) return "🛡️";
+      if (n.includes("camera") || n.includes("avatar")) return "👤";
+      if (n.includes("fps")) return "📈";
+      if (n.includes("zip")) return "📦";
       return "⚙️";
     }
 
     function render() {
       const grid = document.getElementById("grid");
       const q = document.getElementById("search").value.trim().toLowerCase();
-
       grid.innerHTML = "";
 
       const filtered = assets.filter(a => a.name.toLowerCase().includes(q));
 
       for (const a of filtered) {
-        const cat = guessCategory(a.name);
-
         const div = document.createElement("div");
         div.className = "card";
 
         div.innerHTML = `
           <div class="assetTop">
-            <div class="iconBox">${guessIcon(cat)}</div>
+            <div class="iconBox">${guessIcon(a.name)}</div>
             <div>
               <div class="assetName">${a.name}</div>
-              <div class="assetDesc">${cat}</div>
+              <div class="assetInfo">File in Assets folder</div>
             </div>
           </div>
 
-          <button class="download" onclick="downloadFile('${a.url}')">
+          <button class="download" onclick="downloadFile('${a.file}')">
             ⬇ Download
           </button>
         `;
@@ -225,20 +224,23 @@
       }
     }
 
-    /* ✅ FORCE DOWNLOAD */
-    function downloadFile(url) {
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+    function downloadFile(path) {
+      window.location.href = path;
     }
 
     async function loadAssets() {
-      const res = await fetch("/api/assets");
-      assets = await res.json();
-      render();
+      const err = document.getElementById("err");
+      err.textContent = "";
+
+      try {
+        const res = await fetch("/api/assets");
+        if (!res.ok) throw new Error("API Error");
+
+        assets = await res.json();
+        render();
+      } catch (e) {
+        err.textContent = "❌ FAILED: You must open with http://localhost:5500 (not file://)";
+      }
     }
 
     document.getElementById("search").addEventListener("input", render);
