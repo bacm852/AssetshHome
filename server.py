@@ -22,7 +22,7 @@ def icon_png():
     return send_from_directory(BASE_DIR, "icon.png")
 
 # =========================================================
-# API: LIST ASSETS
+# API: LIST ONLY LUA FILES
 # =========================================================
 @app.route("/api/assets")
 def api_assets():
@@ -34,7 +34,8 @@ def api_assets():
     for file in os.listdir(ASSETS_DIR):
         full = os.path.join(ASSETS_DIR, file)
 
-        if os.path.isfile(full):
+        # ✅ ONLY .lua FILES
+        if os.path.isfile(full) and file.lower().endswith(".lua"):
             assets.append({
                 "name": file,
                 "url": f"/Assets/{file}"
@@ -44,10 +45,14 @@ def api_assets():
     return jsonify(assets)
 
 # =========================================================
-# DOWNLOAD ASSETS (REAL DOWNLOAD)
+# DOWNLOAD LUA FILES
 # =========================================================
 @app.route("/Assets/<path:filename>")
 def download_asset(filename):
+    # ✅ EXTRA SAFETY: ONLY ALLOW .lua DOWNLOAD
+    if not filename.lower().endswith(".lua"):
+        return "Only .lua files allowed!", 403
+
     return send_from_directory(ASSETS_DIR, filename, as_attachment=True)
 
 # =========================================================
@@ -55,4 +60,3 @@ def download_asset(filename):
 # =========================================================
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=3000, debug=True)
-# =========================================================
