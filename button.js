@@ -27,6 +27,34 @@ const ASSETS = [
 
 let currentFilter = "all";
 
+/* LOADING SCREEN */
+function initLoading() {
+  const loadingScreen = document.getElementById("loadingScreen");
+  const loadingProgress = document.getElementById("loadingProgress");
+  const mainModal = document.getElementById("mainModal");
+  
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    
+    loadingProgress.style.width = progress + "%";
+    
+    if (progress >= 100) {
+      clearInterval(interval);
+      
+      setTimeout(() => {
+        loadingScreen.classList.add("hide");
+        mainModal.classList.add("show");
+        
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+        }, 500);
+      }, 300);
+    }
+  }, 150);
+}
+
 function guessCategory(asset) {
   const n = asset.name.toLowerCase();
   if (n.includes("chat") || n.includes("ui") || n.includes("drag")) return "ui";
@@ -118,4 +146,7 @@ if (closeBtn) {
 }
 
 /* START */
-render();
+window.addEventListener("DOMContentLoaded", () => {
+  initLoading();
+  render();
+});
