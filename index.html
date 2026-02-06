@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>https://Bacm852Home</title>
+  <link rel="icon" type="image/png" href="Icon.png" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #05060a;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(0,255,204,0.18), transparent 45%),
+        radial-gradient(circle at 80% 60%, rgba(140,0,255,0.18), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(0,140,255,0.18), transparent 45%);
+      animation: floatbg 7s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes floatbg {
+      0%   { transform: scale(1) translateY(0px); }
+      50%  { transform: scale(1.04) translateY(-12px); }
+      100% { transform: scale(1) translateY(0px); }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .sub {
+      font-size: 13px;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    .searchRow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 15px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+
+    .pill:hover { transform: scale(1.05); }
+    .pill.active {
+      background: #00ffcc;
+      color: black;
+      border: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px rgba(0,0,0,0.55);
+    }
+
+    .assetTop {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: rgba(0,255,204,0.12);
+      border: 1px solid rgba(0,255,204,0.20);
+      color: #00ffcc;
+    }
+
+    .assetName {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .assetDesc {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+
+    .download {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: 0.2s;
+    }
+
+    .download:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(255,255,255,0.15);
+    }
+
+    .footer {
+      margin-top: 24px;
+      opacity: 0.55;
+      font-size: 13px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="title">All Resources</div>
+        <div class="sub">Auto updated from Assets/ folder</div>
+      </div>
+    </div>
+
+    <div class="searchRow">
+      🔍 <input id="search" placeholder="Search assets..." />
+    </div>
+
+    <div class="filters">
+      <div class="pill active" onclick="setFilter('all')" id="f_all">All</div>
+      <div class="pill" onclick="setFilter('ui')" id="f_ui">UI</div>
+      <div class="pill" onclick="setFilter('system')" id="f_system">System</div>
+      <div class="pill" onclick="setFilter('security')" id="f_security">Security</div>
+      <div class="pill" onclick="setFilter('avatar')" id="f_avatar">Avatar</div>
+      <div class="pill" onclick="setFilter('economy')" id="f_economy">Economy</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">© 2026 - BACM852</div>
+  </div>
+
+  <script>
+    let assets = [];
+    let filter = "all";
+
+    function guessCategory(name) {
+      const n = name.toLowerCase();
+
+      if (n.includes("fps") || n.includes("hud") || n.includes("menu")) return "ui";
+      if (n.includes("whitelist") || n.includes("ban") || n.includes("security")) return "security";
+      if (n.includes("avatar") || n.includes("camera") || n.includes("head")) return "avatar";
+      if (n.includes("donation") || n.includes("economy") || n.includes("cash")) return "economy";
+      return "system";
+    }
+
+    function guessIcon(cat) {
+      if (cat === "ui") return "🖥️";
+      if (cat === "security") return "🛡️";
+      if (cat === "avatar") return "👤";
+      if (cat === "economy") return "💰";
+      return "⚙️";
+    }
+
+    function setFilter(f) {
+      filter = f;
+
+      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+      document.getElementById("f_" + f).classList.add("active");
+
+      render();
+    }
+
+    function render() {
+      const grid = document.getElementById("grid");
+      const q = document.getElementById("search").value.trim().toLowerCase();
+
+      grid.innerHTML = "";
+
+      let filtered = assets.filter(a => {
+        const matchSearch = a.name.toLowerCase().includes(q);
+        const matchFilter = (filter === "all") || (a.category === filter);
+        return matchSearch && matchFilter;
+      });
+
+      for (const a of filtered) {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+          <div class="assetTop">
+            <div class="icon">${guessIcon(a.category)}</div>
+            <div>
+              <div class="assetName">${a.name}</div>
+              <div class="assetDesc">Category: ${a.category.toUpperCase()}</div>
+            </div>
+          </div>
+
+          <button class="download" onclick="downloadFile('${a.file}')">
+            ⬇ Download
+          </button>
+        `;
+
+        grid.appendChild(div);
+      }
+    }
+
+    function downloadFile(path) {
+      window.location.href = path;
+    }
+
+    async function loadAssets() {
+      const res = await fetch("/api/assets");
+      assets = await res.json();
+
+      assets = assets.map(a => ({
+        ...a,
+        category: guessCategory(a.name)
+      }));
+
+      render();
+    }
+
+    document.getElementById("search").addEventListener("input", render);
+
+    loadAssets();
+  </script>
+</body>
+</html>
