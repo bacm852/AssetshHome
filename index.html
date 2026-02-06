@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ✅ FIXED NAME -->
   <title>Assetshome</title>
 
-  <!-- ✅ FIXED ICON (your file is icon.png) -->
+  <!-- icon.png in same folder -->
   <link rel="icon" type="image/png" href="icon.png" />
 
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -46,16 +45,8 @@
       padding: 20px;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
     .title {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: bold;
     }
 
@@ -73,7 +64,7 @@
       border-radius: 18px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.10);
-      margin-bottom: 16px;
+      margin: 18px 0 16px;
       backdrop-filter: blur(10px);
     }
 
@@ -84,31 +75,6 @@
       outline: none;
       color: white;
       font-size: 15px;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .pill {
-      padding: 10px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13px;
-      transition: 0.2s;
-    }
-
-    .pill:hover { transform: scale(1.05); }
-    .pill.active {
-      background: #00ffcc;
-      color: black;
-      border: none;
     }
 
     .grid {
@@ -133,7 +99,7 @@
       margin-bottom: 14px;
     }
 
-    .icon {
+    .iconBox {
       width: 44px;
       height: 44px;
       border-radius: 14px;
@@ -149,6 +115,7 @@
     .assetName {
       font-size: 18px;
       font-weight: bold;
+      word-break: break-word;
     }
 
     .assetDesc {
@@ -189,25 +156,13 @@
   <div class="bg"></div>
 
   <div class="wrap">
-    <div class="topbar">
-      <div>
-        <!-- ✅ FIXED TITLE -->
-        <div class="title">Assetshome</div>
-        <div class="sub">Auto updated from Assets/ folder</div>
-      </div>
+    <div>
+      <div class="title">Assetshome</div>
+      <div class="sub">Auto updated from Assets/ folder</div>
     </div>
 
     <div class="searchRow">
       🔍 <input id="search" placeholder="Search assets..." />
-    </div>
-
-    <div class="filters">
-      <div class="pill active" onclick="setFilter('all')" id="f_all">All</div>
-      <div class="pill" onclick="setFilter('ui')" id="f_ui">UI</div>
-      <div class="pill" onclick="setFilter('system')" id="f_system">System</div>
-      <div class="pill" onclick="setFilter('security')" id="f_security">Security</div>
-      <div class="pill" onclick="setFilter('avatar')" id="f_avatar">Avatar</div>
-      <div class="pill" onclick="setFilter('economy')" id="f_economy">Economy</div>
     </div>
 
     <div class="grid" id="grid"></div>
@@ -217,33 +172,23 @@
 
   <script>
     let assets = [];
-    let filter = "all";
 
     function guessCategory(name) {
       const n = name.toLowerCase();
-
-      if (n.includes("fps") || n.includes("hud") || n.includes("menu")) return "ui";
-      if (n.includes("whitelist") || n.includes("ban") || n.includes("security")) return "security";
-      if (n.includes("avatar") || n.includes("camera") || n.includes("head")) return "avatar";
-      if (n.includes("donation") || n.includes("economy") || n.includes("cash")) return "economy";
-      return "system";
+      if (n.includes("fps") || n.includes("hud") || n.includes("menu") || n.includes("ui")) return "UI";
+      if (n.includes("whitelist") || n.includes("ban") || n.includes("security")) return "Security";
+      if (n.includes("avatar") || n.includes("camera") || n.includes("head")) return "Avatar";
+      if (n.includes("donation") || n.includes("economy") || n.includes("cash")) return "Economy";
+      return "System";
     }
 
     function guessIcon(cat) {
+      cat = (cat || "").toLowerCase();
       if (cat === "ui") return "🖥️";
       if (cat === "security") return "🛡️";
       if (cat === "avatar") return "👤";
       if (cat === "economy") return "💰";
       return "⚙️";
-    }
-
-    function setFilter(f) {
-      filter = f;
-
-      document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-      document.getElementById("f_" + f).classList.add("active");
-
-      render();
     }
 
     function render() {
@@ -252,26 +197,24 @@
 
       grid.innerHTML = "";
 
-      let filtered = assets.filter(a => {
-        const matchSearch = a.name.toLowerCase().includes(q);
-        const matchFilter = (filter === "all") || (a.category === filter);
-        return matchSearch && matchFilter;
-      });
+      const filtered = assets.filter(a => a.name.toLowerCase().includes(q));
 
       for (const a of filtered) {
+        const cat = guessCategory(a.name);
+
         const div = document.createElement("div");
         div.className = "card";
 
         div.innerHTML = `
           <div class="assetTop">
-            <div class="icon">${guessIcon(a.category)}</div>
+            <div class="iconBox">${guessIcon(cat)}</div>
             <div>
               <div class="assetName">${a.name}</div>
-              <div class="assetDesc">Category: ${a.category.toUpperCase()}</div>
+              <div class="assetDesc">${cat}</div>
             </div>
           </div>
 
-          <button class="download" onclick="downloadFile('${a.file}')">
+          <button class="download" onclick="downloadFile('${a.url}')">
             ⬇ Download
           </button>
         `;
@@ -280,19 +223,13 @@
       }
     }
 
-    function downloadFile(path) {
-      window.location.href = path;
+    function downloadFile(url) {
+      window.location.href = url;
     }
 
     async function loadAssets() {
       const res = await fetch("/api/assets");
       assets = await res.json();
-
-      assets = assets.map(a => ({
-        ...a,
-        category: guessCategory(a.name)
-      }));
-
       render();
     }
 
