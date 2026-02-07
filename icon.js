@@ -1,15 +1,20 @@
-// icon.js
+// icon.js (PRO - icon.png only)
 (function () {
-  // Remove old icons (if any)
+  const ICON = "./icon.png";
+
+  // Remove old icons
   document
     .querySelectorAll("link[rel='icon'], link[rel='shortcut icon']")
     .forEach((el) => el.remove());
 
-  // Create icon link
+  // Cache bypass (forces refresh)
+  const cache = "?v=" + Date.now();
+
+  // Create icon
   const link = document.createElement("link");
   link.rel = "icon";
   link.type = "image/png";
-  link.href = "./icon.png";
+  link.href = ICON + cache;
 
   // Add to <head>
   document.head.appendChild(link);
