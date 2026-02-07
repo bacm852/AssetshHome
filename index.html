@@ -229,10 +229,8 @@ body{
   font-size:36px;
   font-weight:900;
   letter-spacing:-1px;
-  background: linear-gradient(135deg, #00ffcc, #008cff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color:#00ffcc;
+  text-shadow: 0 0 20px rgba(0,255,204,0.5);
 }
 
 .titleIcon{
@@ -253,13 +251,14 @@ body{
   font-weight:900;
   padding:8px 16px;
   border-radius:10px;
-  background: linear-gradient(135deg, #00ffcc, #008cff);
+  background: linear-gradient(90deg, #00ffcc, #008cff);
   color:#000;
   letter-spacing:1.5px;
   box-shadow: 0 6px 20px rgba(0,255,204,0.5);
   animation: pulse 3s ease-in-out infinite;
   position:relative;
   overflow:hidden;
+  border:none;
 }
 
 .badge::before{
@@ -1528,7 +1527,7 @@ const ASSETS = [
     icon: "🖥️",
     url: "https://drive.google.com/uc?export=download&id=194aWbNcfLj7sJL4QRLqTGktsI_Z_KaE-",
     featured: true,
-    new: true
+    new: false
   },
   {
     name: "sickeningscustomchat",
@@ -1538,18 +1537,18 @@ const ASSETS = [
     icon: "💬",
     url: "https://drive.google.com/uc?export=download&id=10U0if4VIyn40YLzSLGh3Xe6OJBM7wtT7",
     featured: true,
-    new: true
+    new: false
   },
   {
-    name: "Timestop",
+   name: "Timestop",
     version: "v0.2.1",
     desc: "Timestop system.",
-    tags: ["Timestop"],
-    icon: "⌛",
+    tags: ["SYSTEM"],
+    icon: "⚙️",
     url: "https://drive.google.com/uc?export=download&id=1cvBMRmBkheoLA3chFdwwZxtw47jhN6hA",
-    featured: false,
+    featured: true,
     new: true
-  }   
+  }
 ];
 
 let currentFilter = "all";
