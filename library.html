@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AssetsHome - Library</title>
+  <title>Assetbacm852Roblox - Asset Library</title>
   <link rel="icon" type="image/png" href="icon.png">
   <style>
     * {
@@ -48,7 +48,6 @@
       padding: 20px;
     }
 
-    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
@@ -81,11 +80,12 @@
     }
 
     .app-name {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
       background: linear-gradient(135deg, #00ffcc, #008cff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
     .user-area {
@@ -140,7 +140,6 @@
       transform: translateY(-2px);
     }
 
-    /* Library Content */
     #libraryContent {
       min-height: 400px;
     }
@@ -175,9 +174,19 @@
         gap: 15px;
       }
       
+      .app-name {
+        font-size: 16px;
+      }
+      
       .user-area {
         width: 100%;
         justify-content: space-between;
+      }
+      
+      .toast {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
       }
     }
   </style>
@@ -187,11 +196,10 @@
   <div class="bg"></div>
 
   <div class="container">
-    <!-- Header -->
     <header class="header">
       <div class="logo-area">
         <div class="app-icon">📦</div>
-        <h1 class="app-name">AssetsHome</h1>
+        <h1 class="app-name">Assetbacm852Roblox</h1>
       </div>
 
       <div class="user-area">
@@ -204,7 +212,6 @@
       </div>
     </header>
 
-    <!-- Library Content -->
     <div id="libraryContent"></div>
   </div>
 
@@ -217,13 +224,12 @@
   <script src="library.js"></script>
   
   <script>
-    // Check login status
-    const userData = JSON.parse(localStorage.getItem('assetsUser') || sessionStorage.getItem('assetsUser') || '{}');
+    // Check login
+    const userData = JSON.parse(localStorage.getItem('robloxAssetsUser') || sessionStorage.getItem('robloxAssetsUser') || '{}');
     
     if (!userData.loggedIn) {
       window.location.href = 'index.html';
     } else {
-      // Display username
       const userNameEl = document.getElementById('userName');
       if (userNameEl) {
         userNameEl.textContent = userData.username || userData.email?.split('@')[0] || 'User';
@@ -233,8 +239,8 @@
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
       if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('assetsUser');
-        sessionStorage.removeItem('assetsUser');
+        localStorage.removeItem('robloxAssetsUser');
+        sessionStorage.removeItem('robloxAssetsUser');
         window.location.href = 'index.html';
       }
     });

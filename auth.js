@@ -1,6 +1,6 @@
 // ================================================
-// AssetsHome Auth System - CLEAN & BUG FREE
-// NO Google/Discord - Pure Login/Signup Only
+// Assetbacm852Roblox Auth System v1.0
+// Ultra Professional Authentication
 // ================================================
 
 document.addEventListener('DOMContentLoaded', init);
@@ -55,7 +55,7 @@ function initParticles() {
 }
 
 // ================================================
-// TAB SWITCHER (Login/Signup)
+// TAB SWITCHER
 // ================================================
 function initTabs() {
   const tabs = document.querySelectorAll('.tab');
@@ -65,11 +65,9 @@ function initTabs() {
     tab.addEventListener('click', () => {
       const target = tab.dataset.tab;
       
-      // Remove active from all tabs
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       
-      // Show correct form
       forms.forEach(f => {
         f.classList.remove('active');
         if (f.id === `${target}Form`) {
@@ -113,24 +111,20 @@ function initForms() {
   const continueBtn = document.getElementById('continueBtn');
   const forgotLink = document.getElementById('forgotLink');
 
-  // Login Form Handler
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
   }
 
-  // Signup Form Handler
   if (signupForm) {
     signupForm.addEventListener('submit', handleSignup);
   }
 
-  // Continue Button (After Signup Success)
   if (continueBtn) {
     continueBtn.addEventListener('click', () => {
       window.location.href = 'library.html';
     });
   }
 
-  // Forgot Password Link
   if (forgotLink) {
     forgotLink.addEventListener('click', (e) => {
       e.preventDefault();
@@ -161,32 +155,27 @@ function handleLogin(e) {
     return;
   }
 
-  // Show loading state
+  // Show loading
   const btn = form.querySelector('.btn');
-  const originalText = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'LOGGING IN...';
 
-  // Simulate login process
+  // Simulate login
   setTimeout(() => {
-    // Create user session
     const userData = {
       email: email,
       loggedIn: true,
       timestamp: Date.now()
     };
     
-    // Save to storage
     if (remember) {
-      localStorage.setItem('assetsUser', JSON.stringify(userData));
+      localStorage.setItem('robloxAssetsUser', JSON.stringify(userData));
     } else {
-      sessionStorage.setItem('assetsUser', JSON.stringify(userData));
+      sessionStorage.setItem('robloxAssetsUser', JSON.stringify(userData));
     }
 
-    // Show success
     showToast('Login successful! Redirecting...', '✓');
     
-    // Redirect to library
     setTimeout(() => {
       window.location.href = 'library.html';
     }, 1000);
@@ -228,31 +217,27 @@ function handleSignup(e) {
     return;
   }
 
-  // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     showToast('Please enter a valid email address', '❌');
     return;
   }
 
-  // Username validation
   if (username.length < 3) {
     showToast('Username must be at least 3 characters', '❌');
     return;
   }
 
-  // Show loading state
+  // Show loading
   const btn = form.querySelector('.btn');
   btn.disabled = true;
   btn.textContent = 'CREATING ACCOUNT...';
 
   // Simulate account creation
   setTimeout(() => {
-    // Hide form and show success screen
     form.style.display = 'none';
     document.getElementById('successScreen').classList.add('active');
     
-    // Create user session
     const userData = {
       username: username,
       email: email,
@@ -260,10 +245,8 @@ function handleSignup(e) {
       timestamp: Date.now()
     };
     
-    // Save to localStorage (auto remember for new accounts)
-    localStorage.setItem('assetsUser', JSON.stringify(userData));
+    localStorage.setItem('robloxAssetsUser', JSON.stringify(userData));
     
-    // Show success toast
     showToast('Account created successfully!', '✓');
     
   }, 2000);
@@ -281,19 +264,12 @@ function showToast(message, icon = '✓') {
   
   if (!toast || !toastIcon || !toastMsg) return;
   
-  // Clear existing timer
-  if (toastTimer) {
-    clearTimeout(toastTimer);
-  }
+  if (toastTimer) clearTimeout(toastTimer);
   
-  // Update content
   toastIcon.textContent = icon;
   toastMsg.textContent = message;
-  
-  // Show toast
   toast.classList.add('show');
   
-  // Auto hide after 3 seconds
   toastTimer = setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
@@ -303,14 +279,13 @@ function showToast(message, icon = '✓') {
 // CHECK EXISTING SESSION
 // ================================================
 function checkExistingSession() {
-  const savedUser = localStorage.getItem('assetsUser') || sessionStorage.getItem('assetsUser');
+  const savedUser = localStorage.getItem('robloxAssetsUser') || sessionStorage.getItem('robloxAssetsUser');
   
   if (savedUser) {
     try {
       const userData = JSON.parse(savedUser);
       
       if (userData.loggedIn) {
-        // User already logged in, redirect to library
         showToast('Already logged in! Redirecting...', '👋');
         
         setTimeout(() => {
@@ -318,16 +293,15 @@ function checkExistingSession() {
         }, 1000);
       }
     } catch (error) {
-      // Invalid session data, clear it
       console.error('Session error:', error);
-      localStorage.removeItem('assetsUser');
-      sessionStorage.removeItem('assetsUser');
+      localStorage.removeItem('robloxAssetsUser');
+      sessionStorage.removeItem('robloxAssetsUser');
     }
   }
 }
 
 // ================================================
-// CONSOLE LOG
+// CONSOLE
 // ================================================
-console.log('%c📦 AssetsHome Auth System', 'color: #00ffcc; font-size: 18px; font-weight: bold;');
-console.log('%cClean & Bug Free - No Social Login', 'color: #008cff; font-size: 14px;');
+console.log('%c📦 Assetbacm852Roblox Auth System', 'color: #00ffcc; font-size: 18px; font-weight: bold;');
+console.log('%cUltra Professional v1.0', 'color: #008cff; font-size: 14px;');

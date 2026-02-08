@@ -1,13 +1,14 @@
 // ================================================
-// ULTRA ASSETS LIBRARY - CLEAN & BUG FREE v2.1
+// Assetbacm852Roblox - ULTRA ASSET LIBRARY v2.1
+// Complete Full Code - Updated System
 // ================================================
 
 const ASSETS = [
   {
     name: "ShutdownAnnouncement",
     version: "v1.0.0",
-    desc: "Roblox shutdown announcement system with customizable messages.",
-    tags: ["SYSTEM"],
+    desc: "Roblox shutdown announcement system with customizable messages and countdown timer.",
+    tags: ["SYSTEM", "UTILITY"],
     icon: "⚙️",
     url: "https://drive.google.com/uc?export=download&id=170zWF2bnr3ojk_v7LfCjKbFi4HaVo3ve",
     featured: true,
@@ -16,8 +17,8 @@ const ASSETS = [
   {
     name: "Drag System",
     version: "v1.0.0",
-    desc: "Smooth draggable UI system with snap-to-grid functionality.",
-    tags: ["UI"],
+    desc: "Smooth draggable UI system with snap-to-grid functionality and mobile support.",
+    tags: ["UI", "FRAMEWORK"],
     icon: "🖥️",
     url: "https://drive.google.com/uc?export=download&id=194aWbNcfLj7sJL4QRLqTGktsI_Z_KaE-",
     featured: true,
@@ -26,8 +27,8 @@ const ASSETS = [
   {
     name: "sickeningscustomchat",
     version: "v1.0.0",
-    desc: "Custom Roblox chat UI with modern design and emoji support.",
-    tags: ["UI"],
+    desc: "Custom Roblox chat UI with modern design, emoji support, and chat bubbles.",
+    tags: ["UI", "CHAT"],
     icon: "💬",
     url: "https://drive.google.com/uc?export=download&id=10U0if4VIyn40YLzSLGh3Xe6OJBM7wtT7",
     featured: true,
@@ -36,8 +37,8 @@ const ASSETS = [
   {
     name: "Timestop",
     version: "v0.2.1",
-    desc: "Timestop system with visual effects and duration controls.",
-    tags: ["UI", "SYSTEM"],
+    desc: "Timestop system with visual effects, duration controls, and smooth animations.",
+    tags: ["UI", "SYSTEM", "FX"],
     icon: "⏱️",
     url: "https://drive.google.com/uc?export=download&id=1cvBMRmBkheoLA3chFdwwZxtw47jhN6hA",
     featured: true,
@@ -45,20 +46,23 @@ const ASSETS = [
   }
 ];
 
-// State
+// State Management
 let currentFilter = "all";
 let currentSort = "name-asc";
 let searchTerm = "";
 
-// Init
+// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   renderLibrary();
   initSearch();
   initFilters();
   initSort();
+  showToast('Welcome to Assetbacm852Roblox! 🚀', '👋');
 });
 
-// Render Library
+// ================================================
+// RENDER LIBRARY
+// ================================================
 function renderLibrary() {
   const container = document.getElementById('libraryContent');
   if (!container) return;
@@ -82,35 +86,45 @@ function renderLibrary() {
       case "name-asc": return a.name.localeCompare(b.name);
       case "name-desc": return b.name.localeCompare(a.name);
       case "newest": return (b.new ? 1 : 0) - (a.new ? 1 : 0);
+      case "oldest": return (a.new ? 1 : 0) - (b.new ? 1 : 0);
       default: return 0;
     }
   });
 
-  // Create HTML
+  // Build HTML
   let html = `
     <div style="margin-bottom: 25px;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-        <div style="flex: 1; min-width: 300px;">
+        <div style="flex: 1; min-width: 280px;">
           <input 
             type="text" 
             id="searchInput" 
-            placeholder="🔍 Search assets..." 
-            style="width: 100%; padding: 14px 18px; background: rgba(0,0,0,0.4); border: 2px solid rgba(0,255,204,0.3); border-radius: 12px; color: #fff; font-size: 14px; font-weight: 600; outline: none;"
+            value="${searchTerm}"
+            placeholder="🔍 Search Roblox assets..." 
+            style="width: 100%; padding: 14px 18px; background: rgba(0,0,0,0.4); border: 2px solid rgba(0,255,204,0.3); border-radius: 12px; color: #fff; font-size: 14px; font-weight: 600; outline: none; transition: all 0.3s;"
           >
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <select id="sortSelect" style="padding: 12px 18px; background: rgba(0,0,0,0.4); border: 2px solid rgba(0,255,204,0.3); border-radius: 12px; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; outline: none;">
-            <option value="name-asc">Name (A-Z)</option>
-            <option value="name-desc">Name (Z-A)</option>
-            <option value="newest">Newest First</option>
+            <option value="name-asc" ${currentSort === 'name-asc' ? 'selected' : ''}>Name (A-Z)</option>
+            <option value="name-desc" ${currentSort === 'name-desc' ? 'selected' : ''}>Name (Z-A)</option>
+            <option value="newest" ${currentSort === 'newest' ? 'selected' : ''}>Newest First</option>
+            <option value="oldest" ${currentSort === 'oldest' ? 'selected' : ''}>Oldest First</option>
           </select>
         </div>
       </div>
 
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" data-filter="all">📋 All</button>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+        <button class="filter-btn ${currentFilter === 'all' ? 'active' : ''}" data-filter="all">📋 All (${ASSETS.length})</button>
         <button class="filter-btn ${currentFilter === 'ui' ? 'active' : ''}" data-filter="ui">🖥️ UI</button>
         <button class="filter-btn ${currentFilter === 'system' ? 'active' : ''}" data-filter="system">⚙️ System</button>
+        <button class="filter-btn ${currentFilter === 'chat' ? 'active' : ''}" data-filter="chat">💬 Chat</button>
+        <button class="filter-btn ${currentFilter === 'fx' ? 'active' : ''}" data-filter="fx">✨ FX</button>
+      </div>
+
+      <div style="padding: 12px 18px; background: rgba(0,255,204,0.1); border: 2px solid rgba(0,255,204,0.3); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span style="font-weight: 700; font-size: 13px;">Showing: <strong style="color: #00ffcc;">${filtered.length}</strong> of ${ASSETS.length} assets</span>
+        <span style="font-weight: 700; font-size: 13px;">🎯 Ultra Professional Library</span>
       </div>
     </div>
 
@@ -183,6 +197,11 @@ function renderLibrary() {
         justify-content: center;
         font-size: 28px;
         flex-shrink: 0;
+        transition: 0.3s;
+      }
+
+      .asset-card:hover .asset-icon {
+        transform: scale(1.1) rotate(10deg);
       }
 
       .asset-info {
@@ -194,6 +213,7 @@ function renderLibrary() {
         font-weight: 900;
         color: #00ffcc;
         margin-bottom: 5px;
+        line-height: 1.2;
       }
 
       .asset-version {
@@ -224,6 +244,12 @@ function renderLibrary() {
         font-size: 11px;
         font-weight: 700;
         color: #00ffcc;
+        transition: 0.3s;
+      }
+
+      .asset-tag:hover {
+        background: rgba(0,255,204,0.25);
+        transform: scale(1.05);
       }
 
       .download-btn {
@@ -261,15 +287,28 @@ function renderLibrary() {
         font-size: 60px;
         margin-bottom: 15px;
         opacity: 0.5;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      @media (max-width: 768px) {
+        .asset-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   `;
 
+  // Empty state or asset cards
   if (filtered.length === 0) {
     html += `
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
-        <h3 style="font-size: 20px; margin-bottom: 8px;">No assets found</h3>
+        <h3 style="font-size: 20px; margin-bottom: 8px; color: #fff;">No assets found</h3>
         <p>Try adjusting your search or filters</p>
       </div>
     `;
@@ -292,7 +331,7 @@ function renderLibrary() {
             ${asset.featured ? '<span class="asset-tag" style="background: rgba(255,200,0,0.2); border-color: rgba(255,200,0,0.5); color: #ffcc00;">⭐ FEATURED</span>' : ''}
             ${asset.new ? '<span class="asset-tag" style="background: rgba(0,255,100,0.2); border-color: rgba(0,255,100,0.5); color: #00ff88;">🆕 NEW</span>' : ''}
           </div>
-          <button class="download-btn" onclick="downloadAsset('${asset.name}', '${asset.url}', this)">
+          <button class="download-btn" onclick="downloadAsset('${asset.name.replace(/'/g, "\\'")}', '${asset.url}', this)">
             ⬇ DOWNLOAD
           </button>
         </div>
@@ -304,30 +343,45 @@ function renderLibrary() {
 
   container.innerHTML = html;
 
-  // Re-init after render
+  // Re-initialize after render
   initSearch();
   initFilters();
   initSort();
 }
 
-// Search
+// ================================================
+// SEARCH FUNCTIONALITY
+// ================================================
 function initSearch() {
   const searchInput = document.getElementById('searchInput');
   if (!searchInput) return;
 
-  searchInput.value = searchTerm;
-  
   let debounceTimer;
   searchInput.addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       searchTerm = e.target.value.trim();
       renderLibrary();
+      if (searchTerm) {
+        showToast(`Searching for: "${searchTerm}"`, '🔍');
+      }
     }, 300);
+  });
+
+  searchInput.addEventListener('focus', (e) => {
+    e.target.style.borderColor = '#00ffcc';
+    e.target.style.boxShadow = '0 0 20px rgba(0,255,204,0.3)';
+  });
+
+  searchInput.addEventListener('blur', (e) => {
+    e.target.style.borderColor = 'rgba(0,255,204,0.3)';
+    e.target.style.boxShadow = 'none';
   });
 }
 
-// Filters
+// ================================================
+// FILTER FUNCTIONALITY
+// ================================================
 function initFilters() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   
@@ -340,13 +394,13 @@ function initFilters() {
   });
 }
 
-// Sort
+// ================================================
+// SORT FUNCTIONALITY
+// ================================================
 function initSort() {
   const sortSelect = document.getElementById('sortSelect');
   if (!sortSelect) return;
 
-  sortSelect.value = currentSort;
-  
   sortSelect.addEventListener('change', (e) => {
     currentSort = e.target.value;
     renderLibrary();
@@ -354,15 +408,19 @@ function initSort() {
   });
 }
 
-// Download Asset
+// ================================================
+// DOWNLOAD ASSET
+// ================================================
 function downloadAsset(name, url, btn) {
   if (btn.disabled) return;
   
   btn.disabled = true;
+  const originalText = btn.textContent;
   btn.textContent = '⏳ OPENING...';
 
   setTimeout(() => {
     try {
+      // Try to open download link
       const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
       
       if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
@@ -371,18 +429,21 @@ function downloadAsset(name, url, btn) {
       
       btn.textContent = '✓ OPENED';
       btn.style.background = 'rgba(0,255,204,0.3)';
+      btn.style.color = '#00ffcc';
       
-      showToast(`${name} download started!`, '⬇');
+      showToast(`${name} download started! Check your downloads.`, '⬇');
       
       setTimeout(() => {
-        btn.textContent = '⬇ DOWNLOAD';
+        btn.textContent = originalText;
         btn.style.background = '';
+        btn.style.color = '#000';
         btn.disabled = false;
       }, 2500);
       
     } catch (error) {
       console.error('Download error:', error);
       
+      // Fallback method
       try {
         const link = document.createElement('a');
         link.href = url;
@@ -393,24 +454,29 @@ function downloadAsset(name, url, btn) {
         document.body.removeChild(link);
         
         btn.textContent = '✓ STARTED';
-        showToast(`${name} download started!`, '⬇');
+        btn.style.background = 'rgba(0,255,204,0.3)';
+        showToast(`${name} download started via fallback!`, '⬇');
       } catch (fallbackError) {
         btn.textContent = '❌ ERROR';
         btn.style.background = 'rgba(255,60,60,0.3)';
-        showToast('Download failed. Check popup blocker.', '❌');
+        showToast('Download failed. Please check popup blocker settings.', '❌');
       }
       
       setTimeout(() => {
-        btn.textContent = '⬇ DOWNLOAD';
+        btn.textContent = originalText;
         btn.style.background = '';
+        btn.style.color = '#000';
         btn.disabled = false;
       }, 2500);
     }
   }, 600);
 }
 
-// Toast
+// ================================================
+// TOAST NOTIFICATION
+// ================================================
 let toastTimer;
+
 function showToast(msg, icon = '✓') {
   const toast = document.getElementById('toast');
   const toastIcon = document.getElementById('toastIcon');
@@ -429,5 +495,9 @@ function showToast(msg, icon = '✓') {
   }, 3000);
 }
 
-console.log('%c📦 Assets Library Loaded', 'color: #00ffcc; font-size: 16px; font-weight: bold');
-console.log(`%cTotal Assets: ${ASSETS.length}`, 'color: #008cff; font-size: 14px');
+// ================================================
+// CONSOLE LOG
+// ================================================
+console.log('%c📦 Assetbacm852Roblox Library', 'color: #00ffcc; font-size: 18px; font-weight: bold;');
+console.log(`%cTotal Assets: ${ASSETS.length}`, 'color: #008cff; font-size: 14px;');
+console.log('%cUltra Professional v2.1', 'color: #8c00ff; font-size: 14px;');
