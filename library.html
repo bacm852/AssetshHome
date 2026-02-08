@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AssetsHome - Library</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #05060a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    #particles-js {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0,255,204,0.15), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(140,0,255,0.15), transparent 50%);
+      animation: bgFloat 12s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes bgFloat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 25px;
+      background: rgba(10,13,21,0.9);
+      border: 2px solid rgba(0,255,204,0.3);
+      border-radius: 20px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 50px rgba(0,255,204,0.1);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .app-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00ffcc, #008cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      border: 2px solid rgba(0,255,204,0.5);
+    }
+
+    .app-name {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00ffcc, #008cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00ffcc, #008cff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border: 2px solid rgba(0,255,204,0.5);
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      padding: 10px 20px;
+      background: rgba(255,60,60,0.2);
+      border: 2px solid rgba(255,60,60,0.5);
+      border-radius: 10px;
+      color: #ff6060;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,60,60,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Library Content */
+    #libraryContent {
+      min-height: 400px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #00ffcc, #008cff);
+      color: #000;
+      font-weight: 900;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,255,204,0.5);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: all 0.4s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .user-area {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="bg"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-area">
+        <div class="app-icon">📦</div>
+        <h1 class="app-name">AssetsHome</h1>
+      </div>
+
+      <div class="user-area">
+        <div class="user-avatar">👤</div>
+        <div class="user-info">
+          <span class="user-name" id="userName">User</span>
+          <span class="user-role">Ultra Professional</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Library Content -->
+    <div id="libraryContent"></div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Success!</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="library.js"></script>
+  
+  <script>
+    // Check login status
+    const userData = JSON.parse(localStorage.getItem('assetsUser') || sessionStorage.getItem('assetsUser') || '{}');
+    
+    if (!userData.loggedIn) {
+      window.location.href = 'index.html';
+    } else {
+      // Display username
+      const userNameEl = document.getElementById('userName');
+      if (userNameEl) {
+        userNameEl.textContent = userData.username || userData.email?.split('@')[0] || 'User';
+      }
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('assetsUser');
+        sessionStorage.removeItem('assetsUser');
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Particles
+    if (typeof particlesJS !== 'undefined') {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: '#00ffcc' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: '#00ffcc', opacity: 0.2, width: 1 },
+          move: { enable: true, speed: 2, direction: 'none', random: true, out_mode: 'out' }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: { onhover: { enable: true, mode: 'repulse' }, resize: true },
+          modes: { repulse: { distance: 100, duration: 0.4 } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
